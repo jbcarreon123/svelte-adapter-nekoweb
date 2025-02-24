@@ -1,4 +1,4 @@
-# adapter-nekoweb
+# svelte-adapter-nekoweb
 An adapter for SvelteKit apps that builds your SvelteKit app using [@sveltejs/adapter-static](https://github.com/sveltejs/kit/blob/main/packages/adapter-static/) and deploys it automatically on [Nekoweb](https://nekoweb.org).
 
 Note that this is a community project and is not affiliated with Nekoweb.
@@ -7,13 +7,13 @@ Note that this is a community project and is not affiliated with Nekoweb.
 To use the adapter, install it:
 ```
 // npm
-npm i -D adapter-nekoweb
+npm i -D svelte-adapter-nekoweb
 // bun
-bun i -D adapter-nekoweb
+bun i -D svelte-adapter-nekoweb
 ```
 then add it on your `svelte.config.js`:
 ```diff
-+ import adapter from 'adapter-nekoweb';
++ import adapter from 'svelte-adapter-nekoweb';
 
 export default {
 	kit: {
