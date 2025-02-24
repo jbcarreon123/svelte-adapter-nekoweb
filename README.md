@@ -18,9 +18,9 @@ then add it on your `svelte.config.js`:
 export default {
 	kit: {
 		adapter: adapter({
-            apiKey: 'api key here (required)',
-			// Default adapter-static options are below
-			pages: 'build',
+		    apiKey: 'api key here (required)',
+		    // Default adapter-static options are below
+		    pages: 'build',
 			assets: 'build',
 			fallback: undefined,
 			precompress: false,
