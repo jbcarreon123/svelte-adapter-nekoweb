@@ -19,8 +19,8 @@ export default {
 	kit: {
 		adapter: adapter({
 		    apiKey: 'api key here (required)',
-			cookie: 'nekoweb cookie here (optional, but recommended)'
-			folder: 'serve folder (default is "build")'
+			cookie: 'nekoweb cookie here (optional, but recommended)',
+			folder: 'serve folder (default is "build")',
 		    // Default adapter-static options are below
 		    pages: 'build',
 			assets: 'build',

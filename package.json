@@ -1,6 +1,6 @@
 {
   "name": "svelte-adapter-nekoweb",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "description": "Addon adapter for SvelteKit apps that builds the site using adapter-static and automatically deploys it to Nekoweb.",
   "keywords": [
     "adapter",
