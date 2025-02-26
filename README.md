@@ -19,6 +19,8 @@ export default {
 	kit: {
 		adapter: adapter({
 		    apiKey: 'api key here (required)',
+			cookie: 'nekoweb cookie here (optional, but recommended)'
+			folder: 'serve folder (default is "build")'
 		    // Default adapter-static options are below
 		    pages: 'build',
 			assets: 'build',
@@ -29,6 +31,8 @@ export default {
 	}
 };
 ```
-then create your API key on https://nekoweb.org/api (Be careful! Don't share this to others as this API can modify your site!)
+then create your API key on https://nekoweb.org/api (Be careful! Don't share this to others as this API can modify your site!) then put the API key on `apiKey`.
 
-and lastly, put the API key on `apiKey`.
+if you want your page to go to the recently updated page, get your nekoweb cookie from the devtools and put it on `cookie`! see https://deploy.nekoweb.org/#getting-your-cookie for instructions of how (thanks @thnlqd for helping me implement this!)
+
+and lastly, run `npm run build` or `bun run build` (or anything that can run `vite build`).
