@@ -186,7 +186,6 @@ async function finalizeUpload(apiToken, token, bigId) {
     }
 
     const [csrfToken, username] = await getCSRFToken(token);
-    console.log(`${csrfToken}, ${username}`);
 
     const formData = new FormData()
     formData.append('pathname', `.svelte-adapter-nekoweb.html`)
