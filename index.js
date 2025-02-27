@@ -5,7 +5,7 @@ import archiver from 'archiver';
 import fetch from 'node-fetch';
 //import FormData from 'form-data';
 
-let version = '2.0.0'
+let version = '2.0.3'
 let nekowebApiUrl = 'https://nekoweb.org/api'
 let log;
 

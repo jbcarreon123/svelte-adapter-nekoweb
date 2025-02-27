@@ -1,5 +1,7 @@
 # svelte-adapter-nekoweb
-An adapter for SvelteKit apps that builds your SvelteKit app using [@sveltejs/adapter-static](https://github.com/sveltejs/kit/blob/main/packages/adapter-static/) and deploys it automatically on [Nekoweb](https://nekoweb.org).
+[![jbcarreon123/svelte-adapter-nekoweb](https://img.shields.io/badge/github-svelte--adapter--nekoweb-green?style=for-the-badge&logo=github&logoColor=white)](https://github.com/jbcarreon123/svelte-adapter-nekoweb) [![NPM Downloads](https://img.shields.io/npm/dm/svelte-adapter-nekoweb?style=for-the-badge&logo=npm&color=red)](https://www.npmjs.com/package/svelte-adapter-nekoweb)
+
+An adapter for Svelte that builds your Svelte(Kit) app using [@sveltejs/adapter-static](https://github.com/sveltejs/kit/blob/main/packages/adapter-static/) and deploys it automatically on [Nekoweb](https://nekoweb.org).
 
 Note that this is a community project and is not affiliated with Nekoweb.
 
