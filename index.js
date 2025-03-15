@@ -3,6 +3,7 @@ import fs from 'node:fs';
 import fsp from 'node:fs/promises';
 import archiver from 'archiver';
 import fetch from 'node-fetch';
+import path from 'node:path';
 //import FormData from 'form-data';
 
 let version = '2.0.3'
@@ -172,7 +173,36 @@ async function uploadFile(token, filePath, bigId) {
     // return uploadedBytes;
 }
 
-async function finalizeUpload(apiToken, token, bigId) {
+/**
+ * @param {string} dir 
+ * @returns {string | null}
+ */
+function getRssFile(dir) {
+    try {
+        const files = fs.readdirSync(dir);
+
+        for (const fileIndex in files) {
+            const file = files[fileIndex]
+            const filePath = path.join(dir, file)
+            const stat = fs.lstatSync(filePath)
+            if (stat.isDirectory()) {
+                const res = getRssFile(filePath);
+                if (res) {
+                    return res
+                }
+            } else if (file.endsWith('.xml')) {
+                return filePath
+            }
+        }
+
+        return null
+    } catch (e) {
+        console.error(e)
+        return null
+    }
+}
+
+async function finalizeUpload(apiToken, token, bigId, rssFile, rssContent) {
     const response = await genericRequest(`/files/import/${bigId}`, {
         method: 'POST',
         headers: {
@@ -187,12 +217,30 @@ async function finalizeUpload(apiToken, token, bigId) {
 
     const [csrfToken, username] = await getCSRFToken(token);
 
+    if (rssFile && rssContent) {
+        const formData = new FormData()
+        formData.append('csrf', csrfToken)
+        formData.append('site', username)
+
+        formData.append('pathname', rssFile)
+        formData.append('content', rssContent)
+        const resp = await genericRequest("/files/edit", {
+            method: "POST",
+            body: formData,
+            headers: {
+                ...token,
+            },
+        });
+        if (!resp.ok) {
+            log.error(`Failed to send RSS cookie request: ${resp.status} ${resp.statusText} (${await resp.text()})`);
+        }
+    }
+
     const formData = new FormData()
-    formData.append('pathname', `.svelte-adapter-nekoweb.html`)
-    formData.append('content', `<!-- deployed to Nekoweb using svelte-adapter-nekoweb on ${Date.now()} -->`)
     formData.append('csrf', csrfToken)
     formData.append('site', username)
-
+    formData.append('pathname', `.svelte-adapter-nekoweb.html`)
+    formData.append('content', `<!-- deployed to Nekoweb using svelte-adapter-nekoweb on ${new Date(Date.now()).toDateString()} -->`)
     const resp = await genericRequest("/files/edit", {
         method: "POST",
         body: formData,
@@ -201,7 +249,7 @@ async function finalizeUpload(apiToken, token, bigId) {
         },
     });
     if (!resp.ok) {
-        log.error(`Failed to send cookie request: ${resp.status} ${resp.statusText} (${await resp.text()})`);
+        log.error(`Failed to send RSS cookie request: ${resp.status} ${resp.statusText} (${await resp.text()})`);
     }
     log('Sent cookie request')
 }
@@ -244,6 +292,11 @@ export default function (options) {
             const outDir = assets ?? "build";
             const tmpBuildDir = ".build-temp";
             const zipFileName = `${folder}.zip`;
+            const rssFile = getRssFile(outDir);
+            let rssContent;
+            if (rssFile) {
+                rssContent = fs.readFileSync(rssFile, 'utf-8') + `\n<!-- deployed to Nekoweb using svelte-adapter-nekoweb on ${new Date(Date.now()).toDateString()} -->`
+            }
             fs.cpSync(outDir, tmpBuildDir + `/${folder}`, {
                 recursive: true
             });
@@ -267,7 +320,7 @@ export default function (options) {
                 });
             } catch (e) { }
 
-            await finalizeUpload(apiToken, token, bigId.id)
+            await finalizeUpload(apiToken, token, bigId.id, rssFile, rssContent)
             builder.log(`Successfully deployed "${outDir}"`)
             await fsp.unlink(zipFileName);
             builder.rimraf(tmpBuildDir);
