@@ -87,14 +87,19 @@ async function zipDirectory(source, out) {
 };
 
 async function initFileUpload(token) {
-    const response = await genericRequest('/files/big/create', {
-        method: 'GET',
-        headers: token
-    });
-    if (!response.ok) {
-        const errorText = await response.text();
-        throw new Error(`Failed to create upload session: ${response.status} ${response.statusText} - ${errorText}`);
-    } return response.json();
+    try {
+        const response = await genericRequest('/files/big/create', {
+            method: 'GET',
+            headers: token
+        });
+        if (!response.ok) {
+            const errorText = await response.text();
+            throw new Error(`Failed to create upload session: ${response.status} ${response.statusText} - ${errorText}`);
+        } return response.json();
+    } catch (error) {
+        console.log(error)
+        throw error
+    }
 }
 
 /**
